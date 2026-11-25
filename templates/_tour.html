@@ -13,13 +13,16 @@
         <span class="operator-badge {% if tour.operator == 'Slow Rail Journeys' %}operator-slowrail{% elif tour.operator == '707 Operations' %}operator-707{% elif tour.operator == 'Seymour Railway Heritage Centre' %}operator-srhc{% else %}operator-steamrail{% endif %}">
           <a href="{% if tour.operator == 'Slow Rail Journeys' %}https://www.slowrailjourneys.com.au/upcoming-journeys{% elif tour.operator == '707 Operations' %}https://www.707operations.com/day{% elif tour.operator == 'Seymour Railway Heritage Centre' %}https://srhc.org.au/tours/{% else %}https://www.steamrail.com.au/tours{% endif %}" target="_blank">{{ tour.operator or "Unknown operator" }}</a>
         </span>
-        {% set title, traction = split_traction(tour) %}
-        {% for kind in traction %}
+        {% set tags = tour_tags(tour) %}
+        {% for kind in tags.traction %}
           <span class="traction-pill traction-{{ kind | lower }}">{{ kind }}</span>
         {% endfor %}
-        <h2>{{ title }}</h2>
+        {% if tags.gauge %}
+          <span class="traction-pill gauge-pill">{{ tags.gauge }}</span>
+        {% endif %}
+        <h2>{{ tags.title }}</h2>
         <p><strong>{{ tour.date_text or tour.date }}</strong></p>
-        {% for detail in tour.details %}
+        {% for detail in tags.details %}
           <p>{{ detail }}</p>
         {% endfor %}
         {% set http_links = [] %}
