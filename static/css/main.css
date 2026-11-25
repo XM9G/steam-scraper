@@ -207,6 +207,18 @@ body {
     border-radius: 6px;
 }
 
+.archive-seen {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 0;
+}
+
+.archive-year > h2 {
+    border-bottom: 2px solid var(--divider);
+    padding-bottom: 0.25rem;
+    margin-top: 2rem;
+}
+
 .footer {
     text-align: center;
     padding: 1rem;

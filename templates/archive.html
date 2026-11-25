@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% from "_tour.html" import render_tour %}
+
+{% block title %}Tour Archive{% endblock %}
+{% block description %}Past and present heritage rail tours across Victoria.{% endblock %}
+{% block heading %}Tour Archive{% endblock %}
+
+{% block page_link %}
+      <a class="feed-link" href="{{ url_for('tours') }}">Upcoming Tours</a>
+{% endblock %}
+
+{% block content %}
+  {% for year, year_tours in tours_by_year %}
+    <section class="archive-year">
+      <h2>{{ year }}</h2>
+      {% for tour in year_tours %}
+        {{ render_tour(tour, archived=True) }}
+      {% endfor %}
+    </section>
+  {% else %}
+    <p>Nothing here yet.</p>
+  {% endfor %}
+{% endblock %}

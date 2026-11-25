@@ -8,12 +8,16 @@ import xml.etree.ElementTree as ET
 
 from flask import Flask, Response, render_template, request
 
+from archive import ARCHIVE_FILENAME, archived_tours, load_archive
+
 
 app = Flask(__name__)
 TOURS_FILE = Path(__file__).with_name("steamrail_tours.json")
+ARCHIVE_FILE = Path(__file__).with_name(ARCHIVE_FILENAME)
 
 ATOM_NS = "http://www.w3.org/2005/Atom"
 ET.register_namespace("atom", ATOM_NS)
+
 
 def split_tours(tours, today=None):
     today = today or date.today()
@@ -38,6 +42,28 @@ def format_last_updated(last_updated):
     tz = f" {dt.tzname()}" if dt.tzinfo and dt.tzname() else ""
     return f"{dt.day} {dt.strftime('%B %Y')}, {hour}:{dt.minute:02d} {period}{tz}"
 
+
+
+@app.template_filter("seen_date")
+def format_seen_date(timestamp):
+    if not timestamp:
+        return "unknown"
+    try:
+        dt = datetime.fromisoformat(timestamp)
+    except ValueError:
+        return str(timestamp)
+    return f"{dt.day} {dt.strftime('%B %Y')}"
+
+
+def group_tours_by_year(tours):
+    groups = []
+    for tour in tours:
+        year = (tour.get("date") or "")[:4] or "Undated"
+        if groups and groups[-1][0] == year:
+            groups[-1][1].append(tour)
+        else:
+            groups.append((year, [tour]))
+    return groups
 
 def _first_http_url(items):
     for item in items or ():
@@ -241,6 +267,12 @@ def ical_feed():
         headers={"Content-Disposition": 'inline; filename="tours.ics"'},
     )
 
+
+
+@app.get("/archive")
+def tour_archive():
+    tours = archived_tours(load_archive(ARCHIVE_FILE))
+    return render_template("archive.html", tours_by_year=group_tours_by_year(tours))
 
 if __name__ == "__main__":
     app.run(port=6234)

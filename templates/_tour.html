@@ -1,0 +1,39 @@
+{% macro render_tour(tour, archived=False) %}
+    <div class="tour">
+      {% if tour.images %}
+        <div class="tour-images">
+          {% for image in tour.images %}
+            {% if image.url and image.url.startswith(("http://", "https://")) %}
+              <img src="{{ image.url }}" alt="{{ image.alt }}" title="{{ image.title }}" class="tour-image" loading="lazy">
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+      <div class="tour-details">
+        <span class="operator-badge {% if tour.operator == 'Slow Rail Journeys' %}operator-slowrail{% elif tour.operator == '707 Operations' %}operator-707{% elif tour.operator == 'Seymour Railway Heritage Centre' %}operator-srhc{% else %}operator-steamrail{% endif %}">
+          <a href="{% if tour.operator == 'Slow Rail Journeys' %}https://www.slowrailjourneys.com.au/upcoming-journeys{% elif tour.operator == '707 Operations' %}https://www.707operations.com/day{% elif tour.operator == 'Seymour Railway Heritage Centre' %}https://srhc.org.au/tours/{% else %}https://www.steamrail.com.au/tours{% endif %}" target="_blank">{{ tour.operator or "Unknown operator" }}</a>
+        </span>
+        <h2>{{ tour.title }}</h2>
+        <p><strong>{{ tour.date_text or tour.date }}</strong></p>
+        {% for detail in tour.details %}
+          <p>{{ detail }}</p>
+        {% endfor %}
+        {% set http_links = [] %}
+        {% for link in tour.links %}
+          {% if link.url and link.url.startswith(("http://", "https://")) %}
+            {% set _ = http_links.append(link) %}
+          {% endif %}
+        {% endfor %}
+        {% if http_links %}
+          <div class="tour-links">
+            {% for link in http_links %}
+              <a class="tour-link" href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.text or link.url }}</a>
+            {% endfor %}
+          </div>
+        {% endif %}
+        {% if archived and not tour.still_listed %}
+          <p class="archive-seen">Removed from the operator's site after {{ tour.last_seen | seen_date }}</p>
+        {% endif %}
+      </div>
+    </div>
+{% endmacro %}

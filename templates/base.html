@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="color-scheme" content="light dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{% block description %}Upcoming heritage rail tours across Victoria.{% endblock %}">
+  <title>{% block title %}Heritage Rail Tours{% endblock %}</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Heritage Rail Tours">
+  <meta property="og:title" content="{{ self.title() }}">
+  <meta property="og:description" content="{{ self.description() }}">
+  <meta property="og:url" content="{{ request.url }}">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="alternate" type="application/rss+xml" title="Heritage Rail Tours RSS Feed" href="{{ url_for('rss_feed') }}">
+</head>
+<body>
+  <div class="page-header">
+    <h1>{% block heading %}{% endblock %}</h1>
+    <div class="feed-links">
+      {% block page_link %}{% endblock %}
+      <a class="feed-link" href="{{ url_for('rss_feed') }}">RSS Feed</a>
+      <a class="feed-link" href="{{ url_for('ical_feed') }}">iCal Feed</a>
+      <a class="feed-link" href="https://victorianrailphotos.com" target="_blank" rel="noopener noreferrer">Victorian Rail Photos</a>
+    </div>
+  </div>
+  {% block content %}{% endblock %}
+  <div class="footer">
+    <p>Data from <a href="https://www.steamrail.com.au/tours" target="_blank" rel="noopener noreferrer">Steamrail Victoria</a>, <a href="https://www.slowrailjourneys.com.au/upcoming-journeys" target="_blank" rel="noopener noreferrer">Slow Rail Journeys</a>, <a href="https://www.707operations.com/day" target="_blank" rel="noopener noreferrer">707 Operations</a>, and <a href="https://srhc.org.au/tours/" target="_blank" rel="noopener noreferrer">Seymour Railway Heritage Centre</a>.</p>
+  </div>
+</body>
+</html>

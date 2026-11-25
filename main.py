@@ -3,6 +3,7 @@ from datetime import datetime
 import json
 from pathlib import Path
 
+from archive import ARCHIVE_FILENAME, update_archive
 from scrapers.sevenoseven import scrape_sevenoseven
 from scrapers.slowrailjourneys import scrape_slowrailjourneys
 from scrapers.srhc import scrape_srhc
@@ -37,8 +38,14 @@ def scrape_all_tours():
     return steamrail_tours + slowrail_tours + sevenoseven_tours + srhc_tours
 
 
-def refresh_tours(output_path=DEFAULT_OUTPUT_PATH, scrape_fn=scrape_all_tours):
+def refresh_tours(
+    output_path=DEFAULT_OUTPUT_PATH,
+    scrape_fn=scrape_all_tours,
+    archive_path=None,
+):
     output_path = Path(output_path)
+    if archive_path is None:
+        archive_path = output_path.with_name(ARCHIVE_FILENAME)
     print("Scraping tours from all operators...")
     data = build_tours_payload(scrape_fn())
     print(f"Building JSON payload with {len(data['tours'])} tours")
@@ -51,6 +58,8 @@ def refresh_tours(output_path=DEFAULT_OUTPUT_PATH, scrape_fn=scrape_all_tours):
     )
     temp_path.replace(output_path)
     print(f"Successfully saved tour data to {output_path}")
+    archive = update_archive(data["tours"], data["last_updated"], archive_path)
+    print(f"Tour archive at {archive_path} now holds {len(archive['tours'])} tours")
     return data
 
 
