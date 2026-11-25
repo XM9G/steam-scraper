@@ -81,7 +81,7 @@ class UpdateArchiveTests(unittest.TestCase):
 
     def test_refresh_tours_updates_archive_next_to_output(self):
         output_path = Path(self.tmpdir.name) / "tours.json"
-        refresh_tours(output_path, scrape_fn=lambda: [make_tour("Snow Train")])
+        refresh_tours(output_path, scrape_fn=lambda previous: ([make_tour("Snow Train")], []))
 
         archive = json.loads(self.path.read_text(encoding="utf-8"))
         self.assertEqual([t["title"] for t in archive["tours"].values()], ["Snow Train"])

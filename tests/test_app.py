@@ -134,7 +134,7 @@ class SplitToursTests(unittest.TestCase):
         ]
         with tempfile.TemporaryDirectory() as tmpdir:
             output_path = Path(tmpdir) / "tours.json"
-            data = refresh_tours(output_path, scrape_fn=lambda: sample_tours)
+            data = refresh_tours(output_path, scrape_fn=lambda previous: (sample_tours, []))
             written = json.loads(output_path.read_text(encoding="utf-8"))
             leftover_temps = list(Path(tmpdir).glob("*.tmp"))
 
