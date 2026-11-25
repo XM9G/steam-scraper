@@ -3,14 +3,10 @@ from email.utils import format_datetime
 import hashlib
 from html import escape
 import json
-import os
 from pathlib import Path
-import threading
 import xml.etree.ElementTree as ET
 
 from flask import Flask, Response, render_template, request
-
-from main import refresh_tours
 
 
 app = Flask(__name__)
@@ -18,11 +14,6 @@ TOURS_FILE = Path(__file__).with_name("steamrail_tours.json")
 
 ATOM_NS = "http://www.w3.org/2005/Atom"
 ET.register_namespace("atom", ATOM_NS)
-
-_scheduler_lock = threading.Lock()
-_scheduler_thread = None
-_refresh_lock = threading.Lock()
-
 
 def split_tours(tours, today=None):
     today = today or date.today()
@@ -46,57 +37,6 @@ def format_last_updated(last_updated):
     period = "am" if dt.hour < 12 else "pm"
     tz = f" {dt.tzname()}" if dt.tzinfo and dt.tzname() else ""
     return f"{dt.day} {dt.strftime('%B %Y')}, {hour}:{dt.minute:02d} {period}{tz}"
-
-
-def seconds_until_next_midnight(now=None):
-    now = now or datetime.now().astimezone()
-    next_midnight = (now + timedelta(days=1)).replace(
-        hour=0,
-        minute=0,
-        second=0,
-        microsecond=0,
-    )
-    return max(0.0, (next_midnight - now).total_seconds())
-
-
-def run_midnight_refresh_loop(
-    stop_event,
-    refresh_fn=None,
-    delay_fn=seconds_until_next_midnight,
-):
-    if refresh_fn is None:
-        refresh_fn = lambda: refresh_tours(TOURS_FILE)
-
-    while not stop_event.is_set():
-        delay = delay_fn()
-        if stop_event.wait(delay):
-            break
-        with _refresh_lock:
-            try:
-                refresh_fn()
-            except Exception:
-                app.logger.exception("Scheduled midnight tour refresh failed")
-
-
-def start_midnight_scheduler(stop_event=None):
-    global _scheduler_thread
-    if app.debug and os.environ.get("WERKZEUG_RUN_MAIN") != "true":
-        return None
-
-    with _scheduler_lock:
-        if _scheduler_thread is not None and _scheduler_thread.is_alive():
-            return _scheduler_thread
-
-        event = stop_event or threading.Event()
-        thread = threading.Thread(
-            target=run_midnight_refresh_loop,
-            args=(event,),
-            name="midnight-tour-refresh",
-            daemon=True,
-        )
-        thread.start()
-        _scheduler_thread = thread
-        return thread
 
 
 def _first_http_url(items):
@@ -302,10 +242,5 @@ def ical_feed():
     )
 
 
-if os.environ.get("FLASK_RUN_FROM_CLI") == "true":
-    start_midnight_scheduler()
-
-
 if __name__ == "__main__":
-    start_midnight_scheduler()
     app.run(port=6234)

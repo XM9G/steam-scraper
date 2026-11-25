@@ -2,7 +2,6 @@ from datetime import date, datetime, timedelta, timezone
 import json
 from pathlib import Path
 import tempfile
-import threading
 import unittest
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
@@ -13,8 +12,6 @@ import app as app_module
 from app import (
     app,
     format_last_updated,
-    run_midnight_refresh_loop,
-    seconds_until_next_midnight,
     split_tours,
 )
 from main import build_tours_payload, refresh_tours
@@ -130,17 +127,6 @@ class SplitToursTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("Last updated: 25 November 2026, 5:09 pm", html)
 
-    def test_seconds_until_next_midnight(self):
-        tz = timezone(timedelta(hours=11))
-        self.assertEqual(
-            seconds_until_next_midnight(datetime(2026, 11, 25, 23, 59, 30, tzinfo=tz)),
-            30.0,
-        )
-        self.assertEqual(
-            seconds_until_next_midnight(datetime(2026, 11, 26, 0, 0, 0, tzinfo=tz)),
-            86400.0,
-        )
-
     def test_refresh_tours_writes_sorted_json_atomically(self):
         sample_tours = [
             {"title": "Later", "date": "2027-05-01"},
@@ -156,26 +142,6 @@ class SplitToursTests(unittest.TestCase):
         self.assertEqual(written, data)
         self.assertIn("last_updated", written)
         self.assertEqual(leftover_temps, [])
-
-    def test_midnight_refresh_loop_continues_after_error(self):
-        stop_event = threading.Event()
-        calls = 0
-
-        def fake_refresh():
-            nonlocal calls
-            calls += 1
-            if calls == 1:
-                raise RuntimeError("transient network failure")
-            stop_event.set()
-
-        with self.assertLogs(app.logger, level="ERROR"):
-            run_midnight_refresh_loop(
-                stop_event,
-                refresh_fn=fake_refresh,
-                delay_fn=lambda: 0,
-            )
-
-        self.assertEqual(calls, 2)
 
     def test_renders_rss_feed_link_and_xml_endpoint(self):
         payload = build_tours_payload(
