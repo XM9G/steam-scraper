@@ -74,24 +74,49 @@ PAGE_DATA_SCRIPT = r"""() => {
 }"""
 
 
-def _clean_lines(text):
-    return [
-        line.strip()
-        for line in text.replace("\ufeff", "").splitlines()
-        if line.strip()
-    ]
+def _normalize_whitespace(text):
+    return re.sub(
+        r"\s+",
+        " ",
+        text.replace("\ufeff", "").replace("\u00a0", " "),
+    ).strip()
+
+
+def _clean_lines(text, links=()):
+    link_texts = {
+        _normalize_whitespace(link.get("text", "")).casefold()
+        for link in links
+        if _normalize_whitespace(link.get("text", ""))
+    }
+    details = []
+    for raw_line in text.replace("\ufeff", "").splitlines():
+        line = _normalize_whitespace(raw_line)
+        if not line:
+            continue
+        if link_texts:
+            segments = [
+                segment.strip()
+                for segment in line.split("|")
+                if segment.strip()
+                and segment.strip().casefold() not in link_texts
+            ]
+            line = " | ".join(segments)
+        if line:
+            details.append(line)
+    return details
 
 
 def _build_tour(record):
     start_date, end_date = normalize_tour_date(record["date"])
+    links = record.get("links", [])
     return {
         "operator": "Steamrail Victoria",
         "date": start_date,
         "end_date": end_date,
         "date_text": record["date"],
         "title": record["title"],
-        "details": _clean_lines(record["details_text"]),
-        "links": record["links"],
+        "details": _clean_lines(record["details_text"], links),
+        "links": links,
         "images": record["images"],
     }
 

@@ -42,7 +42,7 @@ class SplitToursTests(unittest.TestCase):
                 "end_date": "2027-04-19",
                 "date_text": "16-19 APRIL 2027",
                 "details": ["(SG) - D"],
-                "links": [],
+                "links": [{"text": "BOOK NOW", "url": "https://events.humanitix.com/spirit-of-wimmera"}],
                 "images": [],
             }
         ]
@@ -52,6 +52,8 @@ class SplitToursTests(unittest.TestCase):
 
         self.assertIn("operator-srhc", html)
         self.assertIn("Seymour Railway Heritage Centre", html)
+        self.assertIn('class="tour-links"', html)
+        self.assertIn('class="tour-link"', html)
 
     def test_formats_last_updated_timestamp(self):
         self.assertIsNone(format_last_updated(None))

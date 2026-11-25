@@ -28,11 +28,19 @@
         {% for detail in tour.details %}
           <p>{{ detail }}</p>
         {% endfor %}
+        {% set http_links = [] %}
         {% for link in tour.links %}
           {% if link.url and link.url.startswith(("http://", "https://")) %}
-            <p><a href="{{ link.url }}" target="_blank">{{ link.text or link.url }}</a></p>
+            {% set _ = http_links.append(link) %}
           {% endif %}
         {% endfor %}
+        {% if http_links %}
+          <div class="tour-links">
+            {% for link in http_links %}
+              <a class="tour-link" href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.text or link.url }}</a>
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
     </div>
   {% endmacro %}
