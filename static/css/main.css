@@ -1,3 +1,19 @@
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.last-updated {
+    color: #555;
+    font-size: 0.9rem;
+    margin-top: -0.5rem;
+    margin-bottom: 1.25rem;
+}
+
 .tour {
     background-color: #f0f0f0;
     display: flex;
@@ -31,6 +47,11 @@
     font-weight: 600;
 }
 
+.operator-badge a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .operator-steamrail {
     background-color: #dce8f5;
     color: #173a63;
@@ -46,6 +67,11 @@
     color: #704018;
 }
 
+.operator-srhc {
+    background-color: #eadcf5;
+    color: #4a236b;
+}
+
 .tour-image {
     width: 100%;
     max-width: 16rem;
@@ -55,7 +81,14 @@
 }
 
 @media (max-width: 640px) {
-    .tour {
+    .last-updated {
+    color: #555;
+    font-size: 0.9rem;
+    margin-top: -0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.tour {
         flex-direction: column;
     }
 

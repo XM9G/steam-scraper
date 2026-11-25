@@ -1,5 +1,5 @@
 import json
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 from flask import Flask, render_template
@@ -19,6 +19,20 @@ def split_tours(tours, today=None):
     return upcoming, past
 
 
+def format_last_updated(last_updated):
+    if not last_updated:
+        return None
+    try:
+        dt = datetime.fromisoformat(last_updated)
+    except ValueError:
+        return str(last_updated)
+
+    hour = dt.hour % 12 or 12
+    period = "am" if dt.hour < 12 else "pm"
+    tz = f" {dt.tzname()}" if dt.tzinfo and dt.tzname() else ""
+    return f"{dt.day} {dt.strftime('%B %Y')}, {hour}:{dt.minute:02d} {period}{tz}"
+
+
 @app.get("/")
 def tours():
     with TOURS_FILE.open(encoding="utf-8") as json_file:
@@ -28,6 +42,7 @@ def tours():
         "index.html",
         upcoming_tours=upcoming_tours,
         past_tours=past_tours,
+        last_updated=format_last_updated(data.get("last_updated")),
     )
 
 

@@ -1,4 +1,5 @@
 {
+  "last_updated": "2026-11-25T17:10:49+11:00",
   "tours": [
     {
       "operator": "707 Operations",
@@ -85,6 +86,32 @@
       ]
     },
     {
+      "operator": "Seymour Railway Heritage Centre",
+      "date": "2027-04-16",
+      "end_date": "2027-04-19",
+      "date_text": "16-19 APRIL 2027",
+      "title": "Spirit of Wimmera",
+      "details": [
+        "(SG) – D",
+        "from Seymour, Melbourne or North Shore",
+        "We make our second journey to Horsham for all the fun, excitement and quirky sights of the Wimmera Steampunk Festival at Dimboola. We will also return to Serviceton for a rare visit to this once important station.",
+        "The theme is 19th century space travel."
+      ],
+      "links": [
+        {
+          "text": "BOOK NOW",
+          "url": "https://events.humanitix.com/spirit-of-wimmera"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.wp.com/srhc.org.au/wp-content/uploads/2026/06/SSPPU.jpg?resize=700%2C600&ssl=1",
+          "alt": "",
+          "title": ""
+        }
+      ]
+    },
+    {
       "operator": "707 Operations",
       "date": "2027-04-17",
       "end_date": null,
@@ -107,6 +134,48 @@
         {
           "url": "https://static.wixstatic.com/media/b3cd2a_39e68d7488f94beb8572695345fa6ceb~mv2.png/v1/fill/w_351,h_346,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/TOGF%2017%20April%202027.png",
           "alt": "TOGF 17 April 2027.png",
+          "title": ""
+        }
+      ]
+    },
+    {
+      "operator": "Seymour Railway Heritage Centre",
+      "date": "2027-04-17",
+      "end_date": null,
+      "date_text": "17 APRIL 2027",
+      "title": "Steampunk Festival",
+      "details": [
+        "(SG) – D",
+        "from Horsham",
+        "Join in on all the fun, excitement and quirky sights of the Wimmera Steampunk Festival at Dimboola. The theme is 19th century space travel.",
+        "COMING SOON"
+      ],
+      "links": [],
+      "images": [
+        {
+          "url": "https://i0.wp.com/srhc.org.au/wp-content/uploads/2026/10/SRT-STEAMPUNK.jpg?w=700&ssl=1",
+          "alt": "",
+          "title": ""
+        }
+      ]
+    },
+    {
+      "operator": "Seymour Railway Heritage Centre",
+      "date": "2027-04-18",
+      "end_date": null,
+      "date_text": "18 APRIL 2027",
+      "title": "Serviceton",
+      "details": [
+        "(SG) – D",
+        "from Horsham",
+        "Travel with us on a fabulous day out from Horsham and Dimboola to the former station of Serviceton – once a major railway location. Options including lunch and other touring will be available.",
+        "COMING SOON"
+      ],
+      "links": [],
+      "images": [
+        {
+          "url": "https://i0.wp.com/srhc.org.au/wp-content/uploads/2026/06/SERVCE.jpg?resize=700%2C600&ssl=1",
+          "alt": "",
           "title": ""
         }
       ]
