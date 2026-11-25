@@ -4,6 +4,7 @@ import hashlib
 from html import escape
 import json
 from pathlib import Path
+import re
 import xml.etree.ElementTree as ET
 
 from flask import Flask, Response, render_template, request
@@ -17,6 +18,10 @@ ARCHIVE_FILE = Path(__file__).with_name(ARCHIVE_FILENAME)
 
 ATOM_NS = "http://www.w3.org/2005/Atom"
 ET.register_namespace("atom", ATOM_NS)
+
+# Steamrail puts the traction in brackets after the title, e.g. "(D)" or "(S & E)".
+TRACTION_NAMES = {"S": "Steam", "D": "Diesel", "E": "Electric"}
+TRACTION_PATTERN = re.compile(r"\s*\(\s*([SDE](?:\s*[&/,+]\s*[SDE])*)\s*\)")
 
 
 def split_tours(tours, today=None):
@@ -54,6 +59,20 @@ def format_seen_date(timestamp):
         return str(timestamp)
     return f"{dt.day} {dt.strftime('%B %Y')}"
 
+
+
+@app.template_global()
+def split_traction(tour):
+    title = tour.get("title") or ""
+    if tour.get("operator") != "Steamrail Victoria":
+        return title, []
+    match = TRACTION_PATTERN.search(title)
+    if not match:
+        return title, []
+    letters = re.findall(r"[SDE]", match.group(1))
+    traction = [TRACTION_NAMES[letter] for letter in dict.fromkeys(letters)]
+    clean_title = (title[:match.start()] + title[match.end():]).strip()
+    return clean_title or title, traction
 
 def group_tours_by_year(tours):
     groups = []

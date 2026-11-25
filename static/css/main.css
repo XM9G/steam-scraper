@@ -24,6 +24,7 @@
     --sevenoseven-accent: #e0322a;
     --srhc-bg: #1b2237;
     --srhc-text: #ffffff;
+    --steam-bg: #444;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -43,6 +44,7 @@
         --button-border: #3a4b60;
         --button-border-hover: #5b7a9e;
         --button-text: #a9c8ec;
+        --steam-bg: #62676f;
     }
 
     .operator-srhc {
@@ -196,6 +198,30 @@ body {
 .operator-srhc {
     background-color: var(--srhc-bg);
     color: var(--srhc-text);
+}
+
+.traction-pill {
+    display: inline-block;
+    margin-left: 0.3rem;
+    border-radius: 999px;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.traction-steam {
+    background-color: var(--steam-bg);
+    color: #fff;
+}
+
+.traction-diesel {
+    background-color: #f0a202;
+    color: #1a1a1a;
+}
+
+.traction-electric {
+    background-color: #1565c0;
+    color: #fff;
 }
 
 .tour-image {
