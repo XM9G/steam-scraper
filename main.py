@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 import time
 from urllib.parse import urlencode, urlsplit, urlunsplit
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 from archive import ARCHIVE_FILENAME, update_archive
 from scrapers.sevenoseven import scrape_sevenoseven
@@ -115,8 +115,10 @@ def push_status(ok, message, ping_ms=None, base_url=None, opener=urlopen):
     if not base_url:
         return False
     url = build_push_url(base_url, ok, message, ping_ms)
+    # Cloudflare blocks Python's default "Python-urllib" user agent.
+    request = Request(url, headers={"User-Agent": "steam-scraper/1.0"})
     try:
-        with opener(url, timeout=15) as response:
+        with opener(request, timeout=15) as response:
             response.read()
         print(f"Reported {'up' if ok else 'down'} to Uptime Kuma: {message}")
         return True

@@ -107,6 +107,27 @@ class PushTests(unittest.TestCase):
         self.assertFalse(push_status(True, "OK", base_url="https://status.example.com/api/push/abc", opener=unreachable))
 
 
+    def test_push_sends_custom_user_agent(self):
+        sent = []
+
+        class Response:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *exc):
+                return False
+
+            def read(self):
+                return b'{"ok":true}'
+
+        def opener(request, timeout):
+            sent.append(request)
+            return Response()
+
+        self.assertTrue(push_status(True, "OK", base_url="https://status.example.com/api/push/abc", opener=opener))
+        self.assertEqual(sent[0].get_header("User-agent"), "steam-scraper/1.0")
+        self.assertIn("status=up", sent[0].full_url)
+
 class RefreshHealthTests(unittest.TestCase):
     def test_refresh_saves_health_and_passes_previous_tours(self):
         seen_previous = []
