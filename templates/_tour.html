@@ -1,4 +1,4 @@
-{% macro render_tour(tour, archived=False) %}
+{% macro render_tour(tour, archived=False, show_countdown=False) %}
     <div class="tour">
       {% if tour.images %}
         <div class="tour-images">
@@ -21,7 +21,9 @@
           <span class="traction-pill gauge-pill">{{ tags.gauge }}</span>
         {% endif %}
         <h2>{{ tags.title }}</h2>
-        <p><strong>{{ tour.date_text or tour.date }}</strong></p>
+        <p><strong>{{ tour.date_text or tour.date }}</strong>
+          {%- set until = countdown(tour) if show_countdown else None %}
+          {%- if until %} <span class="countdown">{{ until }}</span>{% endif %}</p>
         {% for detail in tags.details %}
           <p>{{ detail }}</p>
         {% endfor %}

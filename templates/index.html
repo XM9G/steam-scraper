@@ -12,7 +12,7 @@
     <p class="last-updated">Last updated: {{ last_updated }}</p>
   {% endif %}
   {% for tour in upcoming_tours %}
-    {{ render_tour(tour) }}
+    {{ render_tour(tour, show_countdown=True) }}
   {% else %}
     <p>No upcoming tours.</p>
   {% endfor %}

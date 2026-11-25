@@ -253,6 +253,13 @@ body {
     margin-right: 10px;
 }
 
+.countdown {
+    margin-left: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
 .footer {
     text-align: center;
     padding: 1rem;

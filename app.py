@@ -38,6 +38,23 @@ def split_tours(tours, today=None):
     return upcoming, past
 
 
+@app.template_global()
+def countdown(tour, today=None):
+    today = today or date.today()
+    start = date.fromisoformat(tour["date"])
+    end = date.fromisoformat(tour.get("end_date") or tour["date"])
+    days = (start - today).days
+    if end < today:
+        return None
+    if days < 0:
+        return "On now"
+    if days == 0:
+        return "Today"
+    if days == 1:
+        return "Tomorrow"
+    return f"In {days} days"
+
+
 def format_last_updated(last_updated):
     if not last_updated:
         return None
