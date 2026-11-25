@@ -18,24 +18,39 @@ def build_tours_payload(tours, updated_at=None):
 
 
 def scrape_all_tours():
-    return (
-        scrape_steamrail()["tours"]
-        + scrape_slowrailjourneys()["tours"]
-        + scrape_sevenoseven()["tours"]
-        + scrape_srhc()["tours"]
-    )
+    print("Scraping Steamrail Victoria tours...")
+    steamrail_tours = scrape_steamrail()["tours"]
+    print(f"  Found {len(steamrail_tours)} Steamrail Victoria tours")
+
+    print("Scraping Slow Rail Journeys tours...")
+    slowrail_tours = scrape_slowrailjourneys()["tours"]
+    print(f"  Found {len(slowrail_tours)} Slow Rail Journeys tours")
+
+    print("Scraping 707 Operations tours...")
+    sevenoseven_tours = scrape_sevenoseven()["tours"]
+    print(f"  Found {len(sevenoseven_tours)} 707 Operations tours")
+
+    print("Scraping Seymour Railway Heritage Centre tours...")
+    srhc_tours = scrape_srhc()["tours"]
+    print(f"  Found {len(srhc_tours)} Seymour Railway Heritage Centre tours")
+
+    return steamrail_tours + slowrail_tours + sevenoseven_tours + srhc_tours
 
 
 def refresh_tours(output_path=DEFAULT_OUTPUT_PATH, scrape_fn=scrape_all_tours):
     output_path = Path(output_path)
+    print("Scraping tours from all operators...")
     data = build_tours_payload(scrape_fn())
+    print(f"Building JSON payload with {len(data['tours'])} tours")
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    print(f"Writing tour data to {output_path}...")
     temp_path = output_path.with_name(f".{output_path.name}.tmp")
     temp_path.write_text(
         json.dumps(data, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
     temp_path.replace(output_path)
+    print(f"Successfully saved tour data to {output_path}")
     return data
 
 
@@ -52,6 +67,7 @@ def main():
     )
     args = parser.parse_args()
 
+    print("Starting heritage rail tour refresh...")
     data = refresh_tours(args.output)
     print(f"Wrote {len(data['tours'])} tours from all operators to {args.output}")
 
