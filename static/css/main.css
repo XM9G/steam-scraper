@@ -217,6 +217,8 @@ body {
     border-bottom: 2px solid var(--divider);
     padding-bottom: 0.25rem;
     margin-top: 2rem;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .footer {
