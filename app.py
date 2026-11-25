@@ -262,8 +262,11 @@ def build_ical_feed(tours, last_updated=None):
 
 @app.get("/")
 def tours():
-    with TOURS_FILE.open(encoding="utf-8") as json_file:
-        data = json.load(json_file)
+    try:
+        with TOURS_FILE.open(encoding="utf-8") as json_file:
+            data = json.load(json_file)
+    except FileNotFoundError:
+        data = {"tours": [], "last_updated": None}
     upcoming_tours, past_tours = split_tours(data["tours"])
     return render_template(
         "index.html",

@@ -1,10 +1,73 @@
+:root {
+    color-scheme: light dark;
+    --bg: #fff;
+    --text: #333;
+    --text-muted: #555;
+    --link: #1a4f8b;
+    --link-visited: #5b3a8c;
+    --card-bg: #f0f0f0;
+    --divider: #ccc;
+    --feed-bg: #f3ede4;
+    --feed-bg-hover: #eadcc9;
+    --feed-text: #9a4a00;
+    --button-bg: #ffffff;
+    --button-bg-hover: #e8f0f8;
+    --button-border: #c7d4e2;
+    --button-border-hover: #93b0cf;
+    --button-text: #173a63;
+    --steamrail-bg: #dce8f5;
+    --steamrail-text: #173a63;
+    --slowrail-bg: #e4efdf;
+    --slowrail-text: #315329;
+    --sevenoseven-bg: #f5e5d7;
+    --sevenoseven-text: #704018;
+    --srhc-bg: #eadcf5;
+    --srhc-text: #4a236b;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #16181c;
+        --text: #dcdfe4;
+        --text-muted: #9ba1aa;
+        --link: #8ab8ec;
+        --link-visited: #c0a6e8;
+        --card-bg: #22252b;
+        --divider: #3a3e46;
+        --feed-bg: #3a2a1a;
+        --feed-bg-hover: #4a3520;
+        --feed-text: #f0b77a;
+        --button-bg: #1c2027;
+        --button-bg-hover: #253042;
+        --button-border: #3a4b60;
+        --button-border-hover: #5b7a9e;
+        --button-text: #a9c8ec;
+        --steamrail-bg: #1f3350;
+        --steamrail-text: #bcd5f2;
+        --slowrail-bg: #243a20;
+        --slowrail-text: #bfe0b3;
+        --sevenoseven-bg: #42301f;
+        --sevenoseven-text: #f0caa5;
+        --srhc-bg: #35244a;
+        --srhc-text: #dcc6f2;
+    }
+}
+
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #fff;
+    color: var(--text);
+    background-color: var(--bg);
     margin: 0;
     padding: 0;
+}
+
+:where(a) {
+    color: var(--link);
+}
+
+:where(a:visited) {
+    color: var(--link-visited);
 }
 
 .page-header {
@@ -26,26 +89,26 @@ body {
     display: inline-block;
     padding: 0.35rem 0.75rem;
     border-radius: 999px;
-    background-color: #f3ede4;
-    color: #9a4a00;
+    background-color: var(--feed-bg);
+    color: var(--feed-text);
     font-size: 0.9rem;
     font-weight: 600;
     text-decoration: none;
 }
 
 .feed-link:hover {
-    background-color: #eadcc9;
+    background-color: var(--feed-bg-hover);
 }
 
 .last-updated {
-    color: #555;
+    color: var(--text-muted);
     font-size: 0.9rem;
     margin-top: -0.5rem;
     margin-bottom: 1.25rem;
 }
 
 .tour {
-    background-color: #f0f0f0;
+    background-color: var(--card-bg);
     display: flex;
     align-items: flex-start;
     gap: 1.5rem;
@@ -54,7 +117,7 @@ body {
 }
 
 .past-tours {
-    border-top: 2px solid #ccc;
+    border-top: 2px solid var(--divider);
     margin-top: 2rem;
     padding-top: 1rem;
 }
@@ -81,9 +144,9 @@ body {
     align-items: center;
     padding: 0.4rem 0.85rem;
     border-radius: 6px;
-    border: 1px solid #c7d4e2;
-    background-color: #ffffff;
-    color: #173a63;
+    border: 1px solid var(--button-border);
+    background-color: var(--button-bg);
+    color: var(--button-text);
     font-size: 0.9rem;
     font-weight: 600;
     text-decoration: none;
@@ -91,8 +154,8 @@ body {
 }
 
 .tour-link:hover {
-    background-color: #e8f0f8;
-    border-color: #93b0cf;
+    background-color: var(--button-bg-hover);
+    border-color: var(--button-border-hover);
 }
 
 .operator-badge {
@@ -109,23 +172,23 @@ body {
 }
 
 .operator-steamrail {
-    background-color: #dce8f5;
-    color: #173a63;
+    background-color: var(--steamrail-bg);
+    color: var(--steamrail-text);
 }
 
 .operator-slowrail {
-    background-color: #e4efdf;
-    color: #315329;
+    background-color: var(--slowrail-bg);
+    color: var(--slowrail-text);
 }
 
 .operator-707 {
-    background-color: #f5e5d7;
-    color: #704018;
+    background-color: var(--sevenoseven-bg);
+    color: var(--sevenoseven-text);
 }
 
 .operator-srhc {
-    background-color: #eadcf5;
-    color: #4a236b;
+    background-color: var(--srhc-bg);
+    color: var(--srhc-text);
 }
 
 .tour-image {
