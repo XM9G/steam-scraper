@@ -305,4 +305,4 @@ if os.environ.get("FLASK_RUN_FROM_CLI") == "true":
 
 if __name__ == "__main__":
     start_midnight_scheduler()
-    app.run()
+    app.run(port=6234)
