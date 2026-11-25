@@ -63,6 +63,45 @@ class SplitToursTests(unittest.TestCase):
         )
         self.assertEqual(format_last_updated("invalid-date"), "invalid-date")
 
+    def test_renders_open_graph_meta_tags(self):
+        tours = [
+            {
+                "operator": "Steamrail Victoria",
+                "title": "Future Tour",
+                "date": "2099-04-16",
+                "end_date": None,
+                "date_text": "16 April 2099",
+                "details": [],
+                "links": [],
+                "images": [
+                    {
+                        "url": "https://example.com/tour.jpg",
+                        "alt": "Future Tour",
+                        "title": "Future Tour",
+                    }
+                ],
+            }
+        ]
+
+        with app.test_request_context("/"):
+            html = render_template(
+                "index.html",
+                upcoming_tours=tours,
+                past_tours=[],
+                last_updated=None,
+            )
+
+        self.assertIn('property="og:type" content="website"', html)
+        self.assertIn('property="og:title" content="Heritage Rail Tours"', html)
+        self.assertIn(
+            'property="og:description" content="Upcoming heritage rail tours across Victoria."',
+            html,
+        )
+        self.assertIn(
+            'property="og:image" content="https://example.com/tour.jpg"',
+            html,
+        )
+
     def test_renders_last_updated_from_json_file(self):
         payload = build_tours_payload(
             [

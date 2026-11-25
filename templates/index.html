@@ -3,7 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tours</title>
+  <meta name="description" content="Upcoming heritage rail tours across Victoria.">
+  <title>Heritage Rail Tours</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Heritage Rail Tours">
+  <meta property="og:title" content="Heritage Rail Tours">
+  <meta property="og:description" content="Upcoming heritage rail tours across Victoria.">
+  <meta property="og:url" content="{{ request.url }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
   <link rel="alternate" type="application/rss+xml" title="Heritage Rail Tours RSS Feed" href="{{ url_for('rss_feed') }}">
 </head>
