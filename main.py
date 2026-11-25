@@ -17,6 +17,28 @@ def build_tours_payload(tours, updated_at=None):
     }
 
 
+def scrape_all_tours():
+    return (
+        scrape_steamrail()["tours"]
+        + scrape_slowrailjourneys()["tours"]
+        + scrape_sevenoseven()["tours"]
+        + scrape_srhc()["tours"]
+    )
+
+
+def refresh_tours(output_path=DEFAULT_OUTPUT_PATH, scrape_fn=scrape_all_tours):
+    output_path = Path(output_path)
+    data = build_tours_payload(scrape_fn())
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    temp_path = output_path.with_name(f".{output_path.name}.tmp")
+    temp_path.write_text(
+        json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    temp_path.replace(output_path)
+    return data
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Scrape heritage rail tours to a JSON file."
@@ -30,18 +52,7 @@ def main():
     )
     args = parser.parse_args()
 
-    tours = (
-        scrape_steamrail()["tours"]
-        + scrape_slowrailjourneys()["tours"]
-        + scrape_sevenoseven()["tours"]
-        + scrape_srhc()["tours"]
-    )
-    data = build_tours_payload(tours)
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(
-        json.dumps(data, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    data = refresh_tours(args.output)
     print(f"Wrote {len(data['tours'])} tours from all operators to {args.output}")
 
 

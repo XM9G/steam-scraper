@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tours</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="alternate" type="application/rss+xml" title="Heritage Rail Tours RSS Feed" href="{{ url_for('rss_feed') }}">
 </head>
 <body>
   {% macro render_tour(tour) %}
@@ -36,7 +37,13 @@
     </div>
   {% endmacro %}
 
-  <h1>Upcoming Tours</h1>
+  <div class="page-header">
+    <h1>Upcoming Tours</h1>
+    <div class="feed-links">
+      <a class="feed-link" href="{{ url_for('rss_feed') }}">RSS Feed</a>
+      <a class="feed-link" href="{{ url_for('ical_feed') }}">iCal Feed</a>
+    </div>
+  </div>
   {% if last_updated %}
     <p class="last-updated">Last updated: {{ last_updated }}</p>
   {% endif %}
