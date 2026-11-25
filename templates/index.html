@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tours</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+  {% macro render_tour(tour) %}
+    <div class="tour">
+      {% if tour.images %}
+        <div class="tour-images">
+          {% for image in tour.images %}
+            {% if image.url and image.url.startswith(("http://", "https://")) %}
+              <img src="{{ image.url }}" alt="{{ image.alt }}" title="{{ image.title }}" class="tour-image">
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+      <div class="tour-details">
+        <span class="operator-badge {% if tour.operator == 'Slow Rail Journeys' %}operator-slowrail{% elif tour.operator == '707 Operations' %}operator-707{% else %}operator-steamrail{% endif %}">
+          {{ tour.operator or "Unknown operator" }}
+        </span>
+        <h2>{{ tour.title }}</h2>
+        <p><strong>{{ tour.date_text or tour.date }}</strong></p>
+        {% for detail in tour.details %}
+          <p>{{ detail }}</p>
+        {% endfor %}
+        {% for link in tour.links %}
+          {% if link.url and link.url.startswith(("http://", "https://")) %}
+            <p><a href="{{ link.url }}" target="_blank">{{ link.text or link.url }}</a></p>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endmacro %}
+
+  <h1>Upcoming Tours</h1>
+  {% for tour in upcoming_tours %}
+    {{ render_tour(tour) }}
+  {% else %}
+    <p>No upcoming tours.</p>
+  {% endfor %}
+
+  {% if past_tours %}
+    <section class="past-tours">
+      <h2>Past Tours</h2>
+      {% for tour in past_tours %}
+        {{ render_tour(tour) }}
+      {% endfor %}
+    </section>
+  {% endif %}
+</body>
+</html>

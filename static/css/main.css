@@ -1,0 +1,67 @@
+.tour {
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+.past-tours {
+    border-top: 2px solid #ccc;
+    margin-top: 2rem;
+    padding-top: 1rem;
+}
+
+.tour-images {
+    flex: 0 0 22%;
+    max-width: 16rem;
+}
+
+.tour-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.operator-badge {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.operator-steamrail {
+    background-color: #dce8f5;
+    color: #173a63;
+}
+
+.operator-slowrail {
+    background-color: #e4efdf;
+    color: #315329;
+}
+
+.operator-707 {
+    background-color: #f5e5d7;
+    color: #704018;
+}
+
+.tour-image {
+    width: 100%;
+    max-width: 16rem;
+    height: auto;
+    display: block;
+    margin: 10px 0;
+}
+
+@media (max-width: 640px) {
+    .tour {
+        flex-direction: column;
+    }
+
+    .tour-images {
+        flex-basis: auto;
+        width: 100%;
+        max-width: 16rem;
+    }
+}
