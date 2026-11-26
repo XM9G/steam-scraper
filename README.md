@@ -14,7 +14,7 @@ The web app reads that file on every request, so new tours show up as soon as a 
 On the server, a cron job runs the scrape every night at 12:05 am. To set it up, run `crontab -e` and add (adjust the paths to where the project lives):
 
 ```
-5 0 * * * cd /home/billy/Documents/steam-scraper && /home/billy/Documents/steam-scraper/venv/bin/python main.py >> /home/billy/Documents/steam-scraper/scrape.log 2>&1
+5 0 * * * cd /path/to/steam-scraper && /path/to/steam-scraper/venv/bin/python main.py >> /path/to/steam-scraper/scrape.log 2>&1
 ```
 
 Settings for Uptime Kuma and Discord go in a `.env` file next to `main.py`. Copy `.env.example` to `.env` and fill in the URLs. `.env` is ignored by git, so the tokens stay off GitHub.
