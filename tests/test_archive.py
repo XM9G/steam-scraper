@@ -120,8 +120,11 @@ class ArchivePageTests(unittest.TestCase):
                 home = app.test_client().get("/").get_data(as_text=True)
             archive = self.get_archive_page(Path(tmpdir) / "missing.json").get_data(as_text=True)
 
-        self.assertIn('href="/archive">Tour Archive</a>', home)
-        self.assertIn('href="/">Upcoming Tours</a>', archive)
+        for page in (home, archive):
+            self.assertRegex(page, r'href="/archive"[^>]*>.*Tour Archive</a>')
+            self.assertRegex(page, r'href="/"[^>]*>.*Upcoming Tours</a>')
+        self.assertRegex(home, r'href="/" aria-current="page"')
+        self.assertRegex(archive, r'href="/archive" aria-current="page"')
 
 
 if __name__ == "__main__":

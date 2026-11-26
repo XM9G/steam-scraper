@@ -12,18 +12,24 @@
   <meta property="og:description" content="{{ self.description() }}">
   <meta property="og:url" content="{{ request.url }}">
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
   <link rel="alternate" type="application/rss+xml" title="Heritage Rail Tours RSS Feed" href="{{ url_for('rss_feed') }}">
 </head>
 <body>
+  {% set current = request.endpoint %}
+  <nav class="navbar">
+    <ul>
+      <li><a class="navbar-logo" href="https://victorianrailphotos.com" aria-label="Victorian Rail Photos"><img src="{{ url_for('static', filename='images/logo_small.png') }}" class="logo" alt="Victorian Rail Photos"></a></li>
+      <li><a href="{{ url_for('tours') }}"{% if current == 'tours' %} aria-current="page"{% endif %}><i class="fa-solid fa-route" aria-hidden="true"></i> Upcoming Tours</a></li>
+      <li><a href="{{ url_for('tour_archive') }}"{% if current == 'tour_archive' %} aria-current="page"{% endif %}><i class="fa-solid fa-box-archive" aria-hidden="true"></i> Tour Archive</a></li>
+      <li><a href="{{ url_for('rss_feed') }}"><i class="fa-solid fa-rss" aria-hidden="true"></i> RSS Feed</a></li>
+      <li><a href="{{ url_for('ical_feed') }}"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i> iCal Feed</a></li>
+      <li><a href="https://victorianrailphotos.com"><i class="fa-solid fa-camera" aria-hidden="true"></i> Victorian Rail Photos</a></li>
+    </ul>
+  </nav>
   <div class="page-header">
     <h1>{% block heading %}{% endblock %}</h1>
-    <div class="feed-links">
-      {% block page_link %}{% endblock %}
-      <a class="feed-link" href="{{ url_for('rss_feed') }}">RSS Feed</a>
-      <a class="feed-link" href="{{ url_for('ical_feed') }}">iCal Feed</a>
-      <a class="feed-link" href="https://victorianrailphotos.com" target="_blank" rel="noopener noreferrer">Victorian Rail Photos</a>
-    </div>
   </div>
   {% block content %}{% endblock %}
   <div class="footer">

@@ -79,26 +79,61 @@ body {
     margin-right: 10px;
 }
 
-.feed-links {
+/* Matches the navbar on victorianrailphotos.com (dark in both themes). */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: rgba(29, 29, 29, 0.85);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    box-shadow: rgba(0, 0, 0, 0.21) 0 5px 10px;
+    color: #e7ecf5;
+    font-family: "Noto Sans", 'Helvetica Neue', Arial, sans-serif;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
 }
 
-.feed-link {
-    display: inline-block;
-    padding: 0.35rem 0.75rem;
-    border-radius: 999px;
-    background-color: var(--feed-bg);
-    color: var(--feed-text);
-    font-size: 0.9rem;
-    font-weight: 600;
+.navbar li {
+    margin: 0;
+}
+
+.navbar a {
+    display: block;
+    padding: 1em 1.5em;
+    color: #e7ecf5;
     text-decoration: none;
+    line-height: 1.375;
+    transition: background 0.2s;
 }
 
-.feed-link:hover {
-    background-color: var(--feed-bg-hover);
+.navbar a:hover,
+.navbar a[aria-current="page"] {
+    background: #424242;
+}
+
+.navbar .navbar-logo {
+    padding: 0 0.25em;
+}
+
+.navbar .navbar-logo:hover {
+    background: none;
+}
+
+.logo {
+    display: block;
+    height: 45px;
+    width: 45px;
+    padding: 5px;
+    object-fit: cover;
 }
 
 .last-updated {
@@ -285,10 +320,10 @@ body {
         margin: 0.75rem 0 0.25rem;
     }
 
-    .feed-link {
-        font-size: 0.85rem;
-        padding: 0.3rem 0.65rem;
+    .navbar a {
+        padding: 1em 1em;
     }
+
 
     .last-updated {
         margin-top: 0;

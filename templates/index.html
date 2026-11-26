@@ -3,10 +3,6 @@
 
 {% block heading %}Upcoming Tours{% endblock %}
 
-{% block page_link %}
-      <a class="feed-link" href="{{ url_for('tour_archive') }}">Tour Archive</a>
-{% endblock %}
-
 {% block content %}
   {% if last_updated %}
     <p class="last-updated">Last updated: {{ last_updated }}</p>
