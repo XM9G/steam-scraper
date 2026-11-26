@@ -200,9 +200,15 @@ body {
     color: var(--srhc-text);
 }
 
+.tour-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+}
+
 .traction-pill {
     display: inline-block;
-    margin-left: 0.3rem;
     border-radius: 999px;
     padding: 0.25rem 0.65rem;
     font-size: 0.85rem;
@@ -299,6 +305,7 @@ body {
         width: 100%;
         max-width: none;
         display: flex;
+        align-items: flex-start;
         gap: 0.5rem;
         overflow-x: auto;
     }
@@ -306,8 +313,6 @@ body {
     .tour-image {
         flex: 0 0 100%;
         max-width: 100%;
-        max-height: 14rem;
-        object-fit: cover;
         margin: 0;
     }
 
