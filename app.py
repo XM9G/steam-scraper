@@ -4,28 +4,21 @@ import hashlib
 from html import escape
 import json
 from pathlib import Path
-import re
 import xml.etree.ElementTree as ET
 
 from flask import Flask, Response, render_template, request
 
 from archive import ARCHIVE_FILENAME, archived_tours, load_archive
+from tags import tour_tags
 
 
 app = Flask(__name__)
+app.add_template_global(tour_tags)
 TOURS_FILE = Path(__file__).with_name("steamrail_tours.json")
 ARCHIVE_FILE = Path(__file__).with_name(ARCHIVE_FILENAME)
 
 ATOM_NS = "http://www.w3.org/2005/Atom"
 ET.register_namespace("atom", ATOM_NS)
-
-# Steamrail puts the traction in brackets after the title, e.g. "(D)" or "(S & E)".
-# SRHC puts gauge and traction on the first detail line, e.g. "(SG) – D".
-TRACTION_NAMES = {"S": "Steam", "D": "Diesel", "E": "Electric"}
-GAUGE_NAMES = {"SG": "Standard gauge", "BG": "Broad gauge", "NG": "Narrow gauge"}
-TRACTION_LETTERS = r"[SDE](?:\s*[&/,+]\s*[SDE])*"
-STEAMRAIL_TRACTION_PATTERN = re.compile(rf"\s*\(\s*({TRACTION_LETTERS})\s*\)")
-SRHC_TRACTION_PATTERN = re.compile(rf"^\(\s*(SG|BG|NG)\s*\)(?:\s*[–—-]\s*({TRACTION_LETTERS}))?$")
 
 
 def split_tours(tours, today=None):
@@ -80,33 +73,6 @@ def format_seen_date(timestamp):
         return str(timestamp)
     return f"{dt.day} {dt.strftime('%B %Y')}"
 
-
-
-def _traction_names(letters):
-    return [TRACTION_NAMES[letter] for letter in dict.fromkeys(re.findall(r"[SDE]", letters))]
-
-
-@app.template_global()
-def tour_tags(tour):
-    title = tour.get("title") or ""
-    details = list(tour.get("details") or [])
-    traction = []
-    gauge = None
-
-    if tour.get("operator") == "Steamrail Victoria":
-        match = STEAMRAIL_TRACTION_PATTERN.search(title)
-        if match:
-            traction = _traction_names(match.group(1))
-            title = (title[:match.start()] + title[match.end():]).strip() or title
-
-    elif tour.get("operator") == "Seymour Railway Heritage Centre" and details:
-        match = SRHC_TRACTION_PATTERN.match(details[0].strip())
-        if match:
-            gauge = GAUGE_NAMES[match.group(1)]
-            traction = _traction_names(match.group(2) or "")
-            details = details[1:]
-
-    return {"title": title, "details": details, "traction": traction, "gauge": gauge}
 
 
 def group_tours_by_year(tours):
